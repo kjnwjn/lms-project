@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+  db:
+    container_name: lms-db-production
+    hostname: lms-db-production
+    image: mysql:8.1.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456a@
+      MYSQL_DATABASE: lms
+    networks:
+      - default
+    ports:
+      - 3306:3306
+    volumes:
+      - ./initdb.d/:/docker-entrypoint-initdb.d/
+  lms-be:
+    image: kjnwjn/lms-be:1.0.0
+    container_name: lms-be
+    hostname: lms-be
+    env_file:
+      - ./.env.be.docker
+    ports:
+      - '3001:3001'
+    networks:
+      - default
+  lms-fe:
+    image: kjnwjn/lms-fe:1.0.0
+    container_name: lms-fe
+    hostname: lms-fe
+    ports:
+      - "80:80"
+  lms-blog-fe:
+    image: kjnwjn/lms-blog-fe:1.0.0
+    container_name: lms-blog-fe
+    hostname: lms-blog-fe
+    ports:
+      - "81:80"
+  flowise:
+    image: flowiseai/flowise:1.4.3
+    restart: always
+    environment:
+      - PORT=${PORT}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - IFRAME_ORIGINS=${IFRAME_ORIGINS}
+      - FLOWISE_USERNAME=${FLOWISE_USERNAME}
+      - FLOWISE_PASSWORD=${FLOWISE_PASSWORD}
+      - FLOWISE_FILE_SIZE_LIMIT=${FLOWISE_FILE_SIZE_LIMIT}
+      - DEBUG=${DEBUG}
+      - DATABASE_PATH=${DATABASE_PATH}
+      - DATABASE_TYPE=${DATABASE_TYPE}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_SSL=${DATABASE_SSL}
+      - DATABASE_SSL_KEY_BASE64=${DATABASE_SSL_KEY_BASE64}
+      - APIKEY_PATH=${APIKEY_PATH}
+      - SECRETKEY_PATH=${SECRETKEY_PATH}
+      - FLOWISE_SECRETKEY_OVERWRITE=${FLOWISE_SECRETKEY_OVERWRITE}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - LOG_PATH=${LOG_PATH}
+      - BLOB_STORAGE_PATH=${BLOB_STORAGE_PATH}
+      - DISABLE_FLOWISE_TELEMETRY=${DISABLE_FLOWISE_TELEMETRY}
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - ./initdb.d/flowise:/root/.flowise
+    command: /bin/sh -c "sleep 3; flowise start"
+networks:
+  default:
+    name: lms-net
+    driver: bridge

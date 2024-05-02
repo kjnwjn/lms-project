@@ -1,0 +1,25 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.html",
+    "./src/**/*.{vue,js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.js",
+    "./node_modules/preline/dist/*.js",
+  ],
+  darkMode: "media", // or 'media' or 'class'
+  theme: {
+    extend: {},
+    colors: {
+      primary: "#2C1F4A",
+      button: "#7F56D9",
+      button2: "#FF5156",
+      secondary: "#DADAF7",
+      infor: "#584e75",
+      item: "#381d74",
+      textColor: "#D9ECFF",
+      textColor2: "#B0B0D1",
+      footer: "#493E65",
+    },
+  },
+  plugins: [require("flowbite/plugin"), require("preline/plugin")],
+};

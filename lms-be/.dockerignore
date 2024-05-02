@@ -1,0 +1,12 @@
+dist
+#node_modules
+.dockerignore
+.gitignore
+.git*
+.git
+
+.vscode
+README.md
+Dockerfile
+docker-compose.yml
+database

@@ -1,0 +1,9 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  background-color: #2c1f4a;
+}
+input {
+  --tw-ring-shadow: 0 0 #000 !important;
+}
